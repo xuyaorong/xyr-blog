@@ -23,13 +23,18 @@ import com.xyr.blog.controller.BaseController;
 import com.xyr.blog.entity.Bo.RestResponseBo;
 import com.xyr.blog.exception.TipException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @Controller
 @RequestMapping("/admin")
+@Api(tags="登录控制")
 @Transactional(rollbackFor = TipException.class)
 public class LoginController extends BaseController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
+	@ApiOperation(value="获得登录页面", notes="获取图书列表")
 	@GetMapping(value = "/login")
 	public String login() {
 		return "admin/login";
