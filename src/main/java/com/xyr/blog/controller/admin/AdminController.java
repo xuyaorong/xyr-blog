@@ -36,11 +36,11 @@ public class AdminController {
 	// return map;
 	// }
 
-	@ApiOperation(value = "登录", notes = "页面")
-	@RequestMapping(value = "index", method = RequestMethod.GET)
-	public ModelAndView page1() {
-		return new ModelAndView("/index.html");
-	}
+//	@ApiOperation(value = "登录", notes = "页面")
+//	@RequestMapping(value = "indextest", method = RequestMethod.GET)
+//	public ModelAndView page1() {
+//		return new ModelAndView("/index.html");
+//	}
 
 	//
 	@ApiOperation(value = "返回map", notes = "map")
