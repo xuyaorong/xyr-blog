@@ -1,5 +1,10 @@
 package com.xyr.blog.controller.admin;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,16 +23,19 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/admin")
-@Api(tags = "测试控制")
 @Transactional(rollbackFor = TipException.class)
-public class TestController extends BaseController {
+public class TestController {
 
+	@Resource
 	private UserService userService;
 
-	@RequestMapping(value = "/getuser",method = RequestMethod.GET)
+	@RequestMapping(value = "getuser", method = RequestMethod.GET)
 	@ApiOperation(value = "按年月查询", notes = "", response = RestResponseBo.class)
-	public RestResponseBo doLogin(@RequestParam(required = true) String username, @RequestParam(required = true) String password) {
-		UserVo userVo=userService.login(username, password);
-		return RestResponseBo.ok(userVo);
+	public Map<String, UserVo> doLogin(@RequestParam(required = true) String username,
+			@RequestParam(required = true) String password) {
+		UserVo userVo = userService.login(username, password);
+		Map<String, UserVo> map = new HashMap<>();
+		map.put("user", userVo);
+		return map;
 	}
 }

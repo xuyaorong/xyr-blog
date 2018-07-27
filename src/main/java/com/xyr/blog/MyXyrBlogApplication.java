@@ -18,9 +18,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @MapperScan("com.xyr.blog.dao")
 @SpringBootApplication
 @EnableTransactionManagement
+@EnableSwagger2
 public class MyXyrBlogApplication extends SpringBootServletInitializer {
 
 	@Override
