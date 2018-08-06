@@ -55,7 +55,7 @@ public class IndexController extends BaseController {
 	@GetMapping(value = "page/{p}")
 	public String index(HttpServletRequest request, @PathVariable Integer p,
 			@RequestParam(value = "limit", defaultValue = "12") Integer limit) {
-		p = (p < 0 || p > WebConst.MAX_PAGE ? 1 : p)-1;
+		p = (p < 0 || p > WebConst.MAX_PAGE ? 1 : p) - 1;
 		PageInfo<ContentVo> articles = contentService.getContents(p, limit);
 		request.setAttribute("articles", articles);
 		if (p > 1) {
@@ -63,5 +63,45 @@ public class IndexController extends BaseController {
 		}
 		return this.render("index");
 	}
+
+	/**
+	 * 文章页
+	 *
+	 * @param request
+	 *            请求
+	 * @param cid
+	 *            文章主键
+	 * @return
+	 */
+	@GetMapping(value = { "article/{cid}", "article/{cid}.html" })
+	public String getArticle(HttpServletRequest request, @PathVariable String cid) {
+		ContentVo contents = contentService.getContents(cid);
+		if (null == contents || "draft".equals(contents.getStatus())) {
+			return this.render_404();
+		}
+		request.setAttribute("article", contents);
+		request.setAttribute("is_post", true);
+		completeArticle(request, contents);
+		//updateArticleHit(contents.getCid(), contents.getHits());
+		return this.render("post");
+	}
+	
+	/**
+     * 抽取公共方法
+     *
+     * @param request
+     * @param contents
+     */
+    private void completeArticle(HttpServletRequest request, ContentVo contents) {
+        if (contents.getAllowComment()) {
+            String cp = request.getParameter("cp");
+            if (StringUtils.isBlank(cp)) {
+                cp = "1";
+            }
+            request.setAttribute("cp", cp);
+            PageInfo<Object> commentsPaginator = null;
+            request.setAttribute("comments", commentsPaginator);
+        }
+    }
 
 }

@@ -2,6 +2,7 @@ package com.xyr.blog.service.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageInfo;
 import com.xyr.blog.dao.ContentVORepository;
 import com.xyr.blog.entity.Vo.ContentVo;
+import com.xyr.blog.exception.TipException;
 import com.xyr.blog.service.ContentService;
+import com.xyr.blog.utils.Tools;
 
 @Service
 public class ContentServiceImpl implements ContentService {
@@ -41,6 +44,31 @@ public class ContentServiceImpl implements ContentService {
 		PageInfo<ContentVo> pageInfo = new PageInfo<>(result);
 		LOGGER.debug("Exit getContents method");
 		return pageInfo;
+	}
+
+	@Override
+	public ContentVo getContents(String id) {
+		if (StringUtils.isNotBlank(id)) {
+			if (Tools.isNumber(id)) {
+                ContentVo contentVo = contentVORepository.findByCid(Integer.valueOf(id));
+                if (contentVo != null) {
+                    contentVo.setHits(contentVo.getHits() + 1);
+                    contentVORepository.save(contentVo);
+                }
+                return contentVo;
+            }else {
+            	List<ContentVo> contentVos = contentVORepository.findBySlug(id);
+            	if (contentVos.size() != 1) {
+                    throw new TipException("query content by id and return is not one");
+                }
+            	if (contentVos.get(0) != null) {
+            		contentVos.get(0).setHits(contentVos.get(0).getHits() + 1);
+                    contentVORepository.save(contentVos.get(0));
+                }
+                return contentVos.get(0);
+            }
+		}
+		return null;
 	}
 
 }

@@ -60,7 +60,7 @@ public class TestController extends BaseController {
 	}
 
 	@RequestMapping(value = "getCon", method = RequestMethod.GET)
-	public Map<String, ContentVo> contenVo(@RequestParam(required = true) Integer id) {
+	public Map<String, ContentVo> getCon(@RequestParam(required = true) Integer id) {
 		ContentVo contenVo = contentService.findUserById(id);
 		Map<String, ContentVo> map = new HashMap<>();
 		map.put("contenVo", contenVo);
@@ -79,12 +79,18 @@ public class TestController extends BaseController {
 		return articles;
 	}
 
-	@RequestMapping(value = "getConten", method = RequestMethod.GET)
-	public Page<ContentVo> getConten() {
+	@RequestMapping(value = "getCons", method = RequestMethod.GET)
+	public Page<ContentVo> getCons() {
 		int page = 0, size = 2;
 		Sort sort = new Sort(Direction.DESC, "cid");
 		Pageable pageable = new PageRequest(page, size, sort);
 		return contentVORepository.findAll(pageable);
+
+	}
+
+	@RequestMapping(value = "getConten", method = RequestMethod.GET)
+	public ContentVo getContent(@RequestParam String cid) {
+		return contentVORepository.findBySlug(cid);
 
 	}
 }

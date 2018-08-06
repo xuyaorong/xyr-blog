@@ -12,4 +12,6 @@ public interface ContentService {
 	public ContentVo findUserById(Integer id);
 
 	PageInfo<ContentVo> getContents(Integer p, Integer limit);
+
+	ContentVo getContents(String id);
 }
