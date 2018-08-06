@@ -3,6 +3,7 @@ package com.xyr.blog.entity.Vo;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 /**
  * @author 
  */
+@Entity
 public class ContentVo implements Serializable {
     /**
      * post表主键
