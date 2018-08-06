@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.vdurmont.emoji.EmojiParser;
 import com.xyr.blog.constant.WebConst;
 import com.xyr.blog.entity.Vo.ContentVo;
 
@@ -190,4 +191,72 @@ public class Commons {
 		}
 		return show_categories("默认分类");
 	}
+
+	/**
+	 * 格式化unix时间戳为日期
+	 *
+	 * @param unixTime
+	 * @return
+	 */
+	public static String fmtdate(Integer unixTime) {
+		return fmtdate(unixTime, "yyyy-MM-dd");
+	}
+
+	/**
+	 * 格式化unix时间戳为日期
+	 *
+	 * @param unixTime
+	 * @param patten
+	 * @return
+	 */
+	public static String fmtdate(Integer unixTime, String patten) {
+		if (null != unixTime && StringUtils.isNotBlank(patten)) {
+			return DateKit.formatDateByUnixTime(unixTime, patten);
+		}
+		return "";
+	}
+
+	/**
+	 * 显示标签
+	 *
+	 * @param tags
+	 * @return
+	 */
+	public static String show_tags(String tags) throws UnsupportedEncodingException {
+		if (StringUtils.isNotBlank(tags)) {
+			String[] arr = tags.split(",");
+			StringBuffer sbuf = new StringBuffer();
+			for (String c : arr) {
+				sbuf.append("<a href=\"/tag/" + URLEncoder.encode(c, "UTF-8") + "\">" + c + "</a>");
+			}
+			return sbuf.toString();
+		}
+		return "";
+	}
+	
+	/**
+     * 显示文章内容，转换markdown为html
+     *
+     * @param value
+     * @return
+     */
+    public static String article(String value) {
+        if (StringUtils.isNotBlank(value)) {
+            value = value.replace("<!--more-->", "\r\n");
+            return TaleUtils.mdToHtml(value);
+        }
+        return "";
+    }
+    
+    /**
+     * An :grinning:awesome :smiley:string &#128516;with a few :wink:emojis!
+     * <p>
+     * 这种格式的字符转换为emoji表情
+     *
+     * @param value
+     * @return
+     */
+    public static String emoji(String value) {
+        return EmojiParser.parseToUnicode(value);
+    }
 }

@@ -89,7 +89,7 @@ public class TestController extends BaseController {
 	}
 
 	@RequestMapping(value = "getConten", method = RequestMethod.GET)
-	public ContentVo getContent(@RequestParam String cid) {
+	public List<ContentVo> getContent(@RequestParam String cid) {
 		return contentVORepository.findBySlug(cid);
 
 	}
