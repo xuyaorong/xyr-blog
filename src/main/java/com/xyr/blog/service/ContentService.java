@@ -14,4 +14,6 @@ public interface ContentService {
 	PageInfo<ContentVo> getContents(Integer p, Integer limit);
 
 	ContentVo getContents(String id);
+	
+	List<ContentVo> getListByLimit(int limit);
 }

@@ -71,4 +71,10 @@ public class ContentServiceImpl implements ContentService {
 		return null;
 	}
 
+	@Override
+	public List<ContentVo> getListByLimit(int limit) {
+		// TODO Auto-generated method stub
+		return contentVORepository.findByLimit(limit);
+	}
+
 }
